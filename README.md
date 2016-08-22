@@ -25,9 +25,9 @@ Follow these easy steps to get these results for your league:
 
 1. Go to [https://fantasy.premierleague.com/](https://fantasy.premierleague.com/) and login.
 2. Go to leagues, and then click on the league you want to analyse
-3. Check out the URL. It will be something like https://fantasy.premierleague.com/a/leagues/standings/**336217**/classic. Save the number, which is your league entry id.
+3. Check out the URL. It will be something like https://fantasy.premierleague.com/a/leagues/standings/336217/classic. Save the 336217 number, which is your league entry id.
 4. Decide what GameWeek you want to analyse, let's say it's 2.
-5. Run the following command at the root of your project: `python playersPickedInLeague.py --league 336217 --gameweek 2` or `python playersPickedInLeague.py -l 336217 -g 2`
+5. Run the following command at the root of your project by inserting your specific league entry Id and Gameweek Number: `python playersPickedInLeague.py --league 336217 --gameweek 2` or `python playersPickedInLeague.py -l 336217 -g 2`
 
 Voila, you should be able to see 2 csv files created in the result folder.
 
