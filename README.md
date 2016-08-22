@@ -8,7 +8,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisities
 
-After cloning the project, you need to have the `requests` library on your machine. Run the following:
+After cloning the project, you need to have Python 2.7 installed on your machine. go to [Download Python 2.7.12](https://www.python.org/downloads/)
+
+You also need to have the `requests` library on your machine. Run the following on your terminal:
 
 ```
 pip install requests
