@@ -29,7 +29,7 @@ Follow these easy steps to get these results for your league:
 4. Decide what GameWeek you want to analyse, let's say it's 2.
 5. Run the following command at the root of your project by inserting your specific league entry Id and Gameweek Number: `python playersPickedInLeague.py --league 336217 --gameweek 2` or `python playersPickedInLeague.py -l 336217 -g 2`
 
-Voila, you should be able to see 2 csv files created in the result folder.
+Voila, you should be able to see 2 csv files created at the root of your project
 
 ### How to Contribute
 This is just an example of what you can do with the fpl apis. I'm sure there are lots of cool ideas, so feel free to suggest by submitting an issue, or even write it yourself and send me a PR :)
