@@ -5,13 +5,13 @@ import argparse
 
 FPL_URL = "https://fantasy.premierleague.com/drf/"
 USER_SUMMARY_SUBURL = "element-summary/"
-LEAGUE_STANDING_SUBURL = "leagues-classic-standings/"
+LEAGUE_CLASSIC_STANDING_SUBURL = "leagues-classic-standings/"
+LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h-standings/"
 TEAM_ENTRY_SUBURL = "entry/"
 PLAYERS_INFO_SUBURL = "bootstrap-static"
 PLAYERS_INFO_FILENAME = "allPlayersInfo.json"
 
 USER_SUMMARY_URL = FPL_URL + USER_SUMMARY_SUBURL
-LEAGUE_STANDING_URL = FPL_URL + LEAGUE_STANDING_SUBURL
 PLAYERS_INFO_URL = FPL_URL + PLAYERS_INFO_SUBURL
 START_PAGE = 1
 
@@ -24,8 +24,8 @@ def getPlayersInfo():
 
 
 # Get users in league: https://fantasy.premierleague.com/drf/leagues-classic-standings/336217?phase=1&le-page=1&ls-page=5
-def getUserEntryIds(league_id, ls_page):
-    league_url = LEAGUE_STANDING_URL + str(league_id) + "?phase=1&le-page=1&ls-page=" + str(ls_page)
+def getUserEntryIds(league_id, ls_page, league_Standing_Url):
+    league_url = league_Standing_Url + str(league_id) + "?phase=1&le-page=1&ls-page=" + str(ls_page)
     r = requests.get(league_url)
     jsonResponse = r.json()
     standings = jsonResponse["standings"]["results"]
@@ -76,6 +76,7 @@ def writeToFile(countOfplayersPicked, fileName):
 parser = argparse.ArgumentParser(description='Get players picked in your league in a certain GameWeek')
 parser.add_argument('-l','--league', help='league entry id', required=True)
 parser.add_argument('-g','--gameweek', help='gameweek number', required=True)
+parser.add_argument('-t', '--type', help='league type')
 args = vars(parser.parse_args())
 
 getPlayersInfo()
@@ -90,9 +91,17 @@ totalNumberOfPlayersCount = 0
 pageCount = START_PAGE
 GWNumber = args['gameweek']
 leagueIdSelected = args['league']
+
+if args['type'] == "h2h":
+    leagueStandingUrl = FPL_URL + LEAGUE_H2H_STANDING_SUBURL
+    print("h2h league mode")
+else:
+    leagueStandingUrl = FPL_URL + LEAGUE_CLASSIC_STANDING_SUBURL
+    print("classic league mode")
+
 while (True):
     try:
-        entries = getUserEntryIds(leagueIdSelected, pageCount)
+        entries = getUserEntryIds(leagueIdSelected, pageCount, leagueStandingUrl)
         if entries is None:
             print("breaking as no more player entries")
             break
