@@ -35,3 +35,7 @@ Voila, you should be able to see 2 csv files created at the root of your project
 
 ### How to Contribute
 This is just an example of what you can do with the fpl apis. I'm sure there are lots of cool ideas, so feel free to suggest by submitting an issue, or even write it yourself and send me a PR :)
+
+### TODO
+
+- Offer this script on a website so that anyone can enter his own Ids
