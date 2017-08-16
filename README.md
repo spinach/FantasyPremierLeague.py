@@ -2,6 +2,11 @@
 
 FantasyPremierLeague-Api-Python helps you access the data of the [Fantasy PremierLeague game](https://fantasy.premierleague.com/). It is intended for use by people who want to get satistical data around the game for fun. For now, there is a cool example where you can get interesting statistics about your mini league.
 
+For now, you can get 2 main things out of the python script:
+
+* Distribution of players that are being picked in a specific League and GameWeek
+* Distribution of players being captained in a specific League and GameWeek
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine.
