@@ -1,6 +1,6 @@
 # ⚽ FantasyPremierLeague-Api-Python
 
-FantasyPremierLeague-Api-Python helps you access the data of the [Fantasy PremierLeague game](https://fantasy.premierleague.com/). It is still a work in progress and is intended for use by people who want to get satistical data around the game for fun. For now, there is no API offered here, but a cool example where you can get interesting statistics about a certain league. Later on, I'll clean up the code and try to offer easy-to-use APIs.
+FantasyPremierLeague-Api-Python helps you access the data of the [Fantasy PremierLeague game](https://fantasy.premierleague.com/). It is intended for use by people who want to get satistical data around the game for fun. For now, there is a cool example where you can get interesting statistics about your mini league.
 
 ## Getting Started
 
