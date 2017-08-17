@@ -130,6 +130,6 @@ while (True):
         writeToFile(listOfCountOfCaptainsPicked, "result captain " + str(leagueIdSelected) + ".csv")
 
         pageCount += 1
-    except Exception, e:
-        print str(e)
+    except Exception as e:
+        print(e)
         pass
