@@ -18,7 +18,7 @@ After cloning the project, you need to have Python 3.4 installed on your machine
 You also need to have the `requests` library on your machine. Run the following on your terminal:
 
 ```
-pip install requests
+pip3 install requests
 ```
 
 ### Usage
