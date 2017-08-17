@@ -66,7 +66,7 @@ def getAllPlayersDetailedJson():
 # writes the results to csv file
 def writeToFile(countOfplayersPicked, fileName):
     with open(fileName, 'w') as out:
-        csv_out = csv.writer(out)
+        csv_out = csv.writer(out, delimiter=";")
         csv_out.writerow(['name', 'num'])
         for row in countOfplayersPicked:
             csv_out.writerow(row)
@@ -112,13 +112,13 @@ while (True):
         for entry in entries:
             elements, captainId = getplayersPickedForEntryId(entry, GWNumber)
             for element in elements:
-                name = playerElementIdToNameMap[element]
+                name = str(playerElementIdToNameMap[element],'utf-8')
                 if name in countOfplayersPicked:
                     countOfplayersPicked[name] += 1
                 else:
                     countOfplayersPicked[name] = 1
 
-            captainName = playerElementIdToNameMap[captainId]
+            captainName = str(playerElementIdToNameMap[captainId],'utf-8')
             if captainName in countOfCaptainsPicked:
                 countOfCaptainsPicked[captainName] += 1
             else:
