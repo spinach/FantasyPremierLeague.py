@@ -15,6 +15,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 After cloning the project, you need to have Python 2.7 installed on your machine. Go to [Download Python 2.7.12](https://www.python.org/downloads/)
 
+_If you want to use Python 3, check branch [python3](https://github.com/spinach/FantasyPremierLeague-Api.py/tree/python3)._
+
 You also need to have the `requests` library on your machine. Run the following on your terminal:
 
 ```
