@@ -38,6 +38,8 @@ Follow these easy steps to get these results for your league:
 4. Decide what GameWeek you want to analyse, let's say it's 2, and then check what type of league it is (whether h2h or classic)
 5. Run the following command at the root of your project by inserting your specific league entry Id and Gameweek Number: `python playersPickedInLeague.py --league 336217 --gameweek 2 --type classic` or `python playersPickedInLeague.py -l 336217 -g 2 -t classic`. For h2h leagues, replace `classic` with `h2h`.
 
+_Warning: If you get an SSLError issue, then try using the [python3 branch](https://github.com/spinach/FantasyPremierLeague-Api.py/tree/python3). More details about the issue can be found in #2._
+
 Voila, you should be able to see 2 csv files created at the root of your project
 
 ### How to Contribute
