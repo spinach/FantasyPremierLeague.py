@@ -1,6 +1,6 @@
 # ⚽ FantasyPremierLeague-Api-Python
 
-FantasyPremierLeague-Api-Python helps you access the data of the [Fantasy PremierLeague game](https://fantasy.premierleague.com/). It is intended for use by people who want to get satistical data around the game for fun. For now, there is a cool example where you can get interesting statistics about your mini league.
+FantasyPremierLeague-Api-Python helps you access the data of the [Fantasy PremierLeague game](https://fantasy.premierleague.com/). It is intended for use by people who want to get statistical data around the game for fun. For now, there is a cool example where you can get interesting statistics about your mini league.
 
 For now, you can get 2 main things out of the python script:
 
@@ -36,7 +36,7 @@ Follow these easy steps to get these results for your league:
 2. Go to leagues, and then click on the league you want to analyse
 3. Check out the URL. It will be something like https://fantasy.premierleague.com/a/leagues/standings/336217/classic. Save the 336217 number, which is your league entry id.
 4. Decide what GameWeek you want to analyse, let's say it's 2, and then check what type of league it is (whether h2h or classic)
-5. Run the following command at the root of your project by inserting your specific league entry Id and Gameweek Number: `python playersPickedInLeague.py --league 336217 --gameweek 2 --type classic` or `python playersPickedInLeague.py -l 336217 -g 2 -t classic`. For h2h leagues, replace `classic` with `h2h`.
+5. Run the following command at the root of your project by inserting your specific league entry Id and GameWeek Number: `python playersPickedInLeague.py --league 336217 --gameweek 2 --type classic` or `python playersPickedInLeague.py -l 336217 -g 2 -t classic`. For h2h leagues, replace `classic` with `h2h`.
 
 _Warning: If you get an SSLError issue, then try using the [python3 branch](https://github.com/spinach/FantasyPremierLeague-Api.py/tree/python3). More details about the issue can be found in [#2](/../../issues/2)._
 
