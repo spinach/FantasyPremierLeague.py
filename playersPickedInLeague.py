@@ -77,6 +77,7 @@ parser = argparse.ArgumentParser(description='Get players picked in your league 
 parser.add_argument('-l','--league', help='league entry id', required=True)
 parser.add_argument('-g','--gameweek', help='gameweek number', required=True)
 parser.add_argument('-t', '--type', help='league type')
+parser.add_argument('-c', '--count', help='count of managers')
 args = vars(parser.parse_args())
 
 getPlayersInfo()
@@ -88,6 +89,8 @@ for element in allPlayers["elements"]:
 countOfplayersPicked = {}
 countOfCaptainsPicked = {}
 totalNumberOfPlayersCount = 0
+playerCountLimit = 250
+playerCount = 0
 pageCount = START_PAGE
 GWNumber = args['gameweek']
 leagueIdSelected = args['league']
@@ -99,8 +102,15 @@ else:
     leagueStandingUrl = FPL_URL + LEAGUE_CLASSIC_STANDING_SUBURL
     print("classic league mode")
 
+if args['count'] is not None:
+    print("count limit " + args['count'])
+    playerCountLimit = int(args['count'])
+
 while (True):
     try:
+        if playerCount == playerCountLimit:
+            break
+
         entries = getUserEntryIds(leagueIdSelected, pageCount, leagueStandingUrl)
         if entries is None:
             print("breaking as no more player entries")
@@ -110,6 +120,9 @@ while (True):
         print("parsing pageCount: " + str(pageCount) + " with total number of players so far:" + str(
             totalNumberOfPlayersCount))
         for entry in entries:
+            if playerCount == playerCountLimit:
+                break
+            playerCount += 1
             elements, captainId = getplayersPickedForEntryId(entry, GWNumber)
             for element in elements:
                 name = playerElementIdToNameMap[element]
