@@ -4,3 +4,8 @@
 .idea/modules.xml
 .idea/vcs.xml
 .idea/workspace.xml
+
+.vscode/
+ppm.csv
+allPlayersInfo.json
+output/

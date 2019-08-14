@@ -3,19 +3,20 @@ import json
 import csv
 import argparse
 
-FPL_URL = "https://fantasy.premierleague.com/drf/"
+FPL_URL = "https://fantasy.premierleague.com/api/"
+LOGIN_URL = "https://users.premierleague.com/accounts/login/"
 USER_SUMMARY_SUBURL = "element-summary/"
-LEAGUE_CLASSIC_STANDING_SUBURL = "leagues-classic-standings/"
-LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h-standings/"
+LEAGUE_CLASSIC_STANDING_SUBURL = "leagues-classic/"
+LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h/"
 TEAM_ENTRY_SUBURL = "entry/"
 PLAYERS_INFO_SUBURL = "bootstrap-static"
-PLAYERS_INFO_FILENAME = "allPlayersInfo.json"
+PLAYERS_INFO_FILENAME = "output/allPlayersInfo.json"
 
 USER_SUMMARY_URL = FPL_URL + USER_SUMMARY_SUBURL
 PLAYERS_INFO_URL = FPL_URL + PLAYERS_INFO_SUBURL
 START_PAGE = 1
 
-# Download all player data: https://fantasy.premierleague.com/drf/bootstrap-static
+# Download all player data: https://fantasy.premierleague.com/api/bootstrap-static
 def getPlayersInfo():
     r = requests.get(PLAYERS_INFO_URL)
     jsonResponse = r.json()
@@ -23,9 +24,10 @@ def getPlayersInfo():
         json.dump(jsonResponse, outfile)
 
 
-# Get users in league: https://fantasy.premierleague.com/drf/leagues-classic-standings/336217?phase=1&le-page=1&ls-page=5
+# Get users in league:
+# https://fantasy.premierleague.com/api/leagues-classic/43919/standings/?page_new_entries=1&page_standings=2&phase=1
 def getUserEntryIds(league_id, ls_page, league_Standing_Url):
-    league_url = league_Standing_Url + str(league_id) + "?phase=1&le-page=1&ls-page=" + str(ls_page)
+    league_url = league_Standing_Url + str(league_id) + "/standings/" + "?page_new_entries=1&page_standings=" + str(ls_page) + "&phase=1"
     r = requests.get(league_url)
     jsonResponse = r.json()
     standings = jsonResponse["standings"]["results"]
@@ -41,7 +43,7 @@ def getUserEntryIds(league_id, ls_page, league_Standing_Url):
     return entries
 
 
-# team picked by user. example: https://fantasy.premierleague.com/drf/entry/2677936/event/1/picks with 2677936 being entry_id of the player
+# team picked by user. example: https://fantasy.premierleague.com/api/entry/2677936/event/1/picks with 2677936 being entry_id of the player
 def getplayersPickedForEntryId(entry_id, GWNumber):
     eventSubUrl = "event/" + str(GWNumber) + "/picks"
     playerTeamUrlForSpecificGW = FPL_URL + TEAM_ENTRY_SUBURL + str(entry_id) + "/" + eventSubUrl
@@ -125,9 +127,9 @@ while (True):
                 countOfCaptainsPicked[captainName] = 1
 
         listOfcountOfplayersPicked = sorted(countOfplayersPicked.items(), key=lambda x: x[1], reverse=True)
-        writeToFile(listOfcountOfplayersPicked, "result playersPicked " + str(leagueIdSelected) + ".csv")
+        writeToFile(listOfcountOfplayersPicked, "output/result playersPicked " + str(leagueIdSelected) + ".csv")
         listOfCountOfCaptainsPicked = sorted(countOfCaptainsPicked.items(), key=lambda x: x[1], reverse=True)
-        writeToFile(listOfCountOfCaptainsPicked, "result captain " + str(leagueIdSelected) + ".csv")
+        writeToFile(listOfCountOfCaptainsPicked, "output/result captain " + str(leagueIdSelected) + ".csv")
 
         pageCount += 1
     except Exception, e:
