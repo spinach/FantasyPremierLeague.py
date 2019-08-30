@@ -27,29 +27,35 @@ def getPlayersInfo():
 # Get users in league:
 # https://fantasy.premierleague.com/api/leagues-classic/43919/standings/?page_new_entries=1&page_standings=2&phase=1
 def getUserEntryIds(league_id, ls_page, league_Standing_Url):
-    league_url = league_Standing_Url + str(league_id) + "/standings/" + "?page_new_entries=1&page_standings=" + str(ls_page) + "&phase=1"
-    r = requests.get(league_url)
-    jsonResponse = r.json()
-    standings = jsonResponse["standings"]["results"]
-    if not standings:
-        print("no more standings found!")
-        return None
-
     entries = []
+    while(True):
+        league_url = league_Standing_Url + str(league_id) + "/standings/" + "?page_new_entries=1&page_standings=" + str(ls_page) + "&phase=1"
+        r = requests.get(league_url)
+        jsonResponse = r.json()
+        managers = jsonResponse["standings"]["results"]
+        if not managers:
+            print "Total managers :",len(entries)
+            break
 
-    for player in standings:
-        entries.append(player["entry"])
+        for player in managers:
+            entries.append(player["entry"])
+        ls_page+=1
 
     return entries
 
 
 # team picked by user. example: https://fantasy.premierleague.com/api/entry/2677936/event/1/picks with 2677936 being entry_id of the player
 def getplayersPickedForEntryId(entry_id, GWNumber):
-    eventSubUrl = "event/" + str(GWNumber) + "/picks"
+    eventSubUrl = "event/" + str(GWNumber) + "/picks/"
     playerTeamUrlForSpecificGW = FPL_URL + TEAM_ENTRY_SUBURL + str(entry_id) + "/" + eventSubUrl
     r = requests.get(playerTeamUrlForSpecificGW)
     jsonResponse = r.json()
-    picks = jsonResponse["picks"]
+    try:
+        picks = jsonResponse["picks"]
+    except:
+        if jsonResponse["detail"]:
+            print "entry_id "+str(entry_id)+" doesn't have info for this gameweek" 
+        return None, None
     elements = []
     captainId = 1
     for pick in picks:
@@ -101,37 +107,37 @@ else:
     leagueStandingUrl = FPL_URL + LEAGUE_CLASSIC_STANDING_SUBURL
     print("classic league mode")
 
-while (True):
+
+try:
+    entries = getUserEntryIds(leagueIdSelected, pageCount, leagueStandingUrl)
+except Exception, err:
+    print "Error occured in getting entries/managers in the league."
+    print err
+    raise
+
+for entry in entries:
     try:
-        entries = getUserEntryIds(leagueIdSelected, pageCount, leagueStandingUrl)
-        if entries is None:
-            print("breaking as no more player entries")
-            break
+        elements, captainId = getplayersPickedForEntryId(entry, GWNumber)
+    except Exception, err:
+        print "Error occured in getting palyers and captain of the entry/manager"
+        print err
+        raise
+    if not elements:
+        continue
+    for element in elements:
+        name = playerElementIdToNameMap[element]
+        if name in countOfplayersPicked:
+            countOfplayersPicked[name] += 1
+        else:
+            countOfplayersPicked[name] = 1
 
-        totalNumberOfPlayersCount += len(entries)
-        print("parsing pageCount: " + str(pageCount) + " with total number of players so far:" + str(
-            totalNumberOfPlayersCount))
-        for entry in entries:
-            elements, captainId = getplayersPickedForEntryId(entry, GWNumber)
-            for element in elements:
-                name = playerElementIdToNameMap[element]
-                if name in countOfplayersPicked:
-                    countOfplayersPicked[name] += 1
-                else:
-                    countOfplayersPicked[name] = 1
+    captainName = playerElementIdToNameMap[captainId]
+    if captainName in countOfCaptainsPicked:
+        countOfCaptainsPicked[captainName] += 1
+    else:
+        countOfCaptainsPicked[captainName] = 1
 
-            captainName = playerElementIdToNameMap[captainId]
-            if captainName in countOfCaptainsPicked:
-                countOfCaptainsPicked[captainName] += 1
-            else:
-                countOfCaptainsPicked[captainName] = 1
-
-        listOfcountOfplayersPicked = sorted(countOfplayersPicked.items(), key=lambda x: x[1], reverse=True)
-        writeToFile(listOfcountOfplayersPicked, "output/result playersPicked " + str(leagueIdSelected) + ".csv")
-        listOfCountOfCaptainsPicked = sorted(countOfCaptainsPicked.items(), key=lambda x: x[1], reverse=True)
-        writeToFile(listOfCountOfCaptainsPicked, "output/result captain " + str(leagueIdSelected) + ".csv")
-
-        pageCount += 1
-    except Exception, e:
-        print str(e)
-        pass
+listOfcountOfplayersPicked = sorted(countOfplayersPicked.items(), key=lambda x: x[1], reverse=True)
+writeToFile(listOfcountOfplayersPicked, "output/GW"+str(GWNumber)+" Players "+str(leagueIdSelected)+".csv")
+listOfCountOfCaptainsPicked = sorted(countOfCaptainsPicked.items(), key=lambda x: x[1], reverse=True)
+writeToFile(listOfCountOfCaptainsPicked, "output/GW"+str(GWNumber)+" Captains "+str(leagueIdSelected)+".csv")
