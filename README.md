@@ -4,8 +4,8 @@ FantasyPremierLeague-Api-Python helps you access the data of the [Fantasy Premie
 
 For now, you can get 2 main things out of the python script:
 
-* Distribution of players that are being picked in a specific League and GameWeek
-* Distribution of players being captained in a specific League and GameWeek
+- Distribution of players that are being picked in a specific League and GameWeek
+- Distribution of players being captained in a specific League and GameWeek
 
 ## Getting Started
 
@@ -15,18 +15,24 @@ These instructions will get you a copy of the project up and running on your loc
 
 After cloning the project, you need to have Python 3.4 installed on your machine. Go to [Download Python 3.4.7](https://www.python.org/downloads/)
 
-You also need to have the `requests` library on your machine. Run the following on your terminal:
+You also need to have the `requests` and `tqdm` library on your machine. Run the following on your terminal:
 
 ```
-pip3 install requests
+pip3 install -r requirements.txt
+```
+
+Or you can install individually by
+
+```
+pip3 install requests tqdm
 ```
 
 ### Usage
 
 For now, you can get 2 main things out of the python script:
 
-* Distribution of players that are being picked in a specific League and GameWeek
-* Distribution of players being captained in a specific League and GameWeek
+- Distribution of players that are being picked in a specific League and GameWeek
+- Distribution of players being captained in a specific League and GameWeek
 
 Follow these easy steps to get these results for your league:
 
@@ -36,9 +42,12 @@ Follow these easy steps to get these results for your league:
 4. Decide what GameWeek you want to analyse, let's say it's 2, and then check what type of league it is (whether h2h or classic)
 5. Run the following command at the root of your project by inserting your specific league entry Id and Gameweek Number: `python3 playersPickedInLeague.py --league 336217 --gameweek 2 --type classic` or `python3 playersPickedInLeague.py -l 336217 -g 2 -t classic`. For h2h leagues, replace `classic` with `h2h`.
 
-Voila, you should be able to see 2 csv files created at the root of your project
+Voila, you should be able to see 2 csv files created at the output folder of your project
+
+Also if you want to run in deubg mode now add argument `-d True` or `--debug True` in above command line
 
 ### How to Contribute
+
 This is just an example of what you can do with the fpl apis. I'm sure there are lots of cool ideas, so feel free to suggest by submitting an issue, or even write it yourself and send me a PR :)
 
 ### TODO
