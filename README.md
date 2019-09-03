@@ -17,11 +17,17 @@ After cloning the project, you need to have Python 2.7 installed on your machine
 
 _If you want to use Python 3, check branch [python3](https://github.com/spinach/FantasyPremierLeague-Api.py/tree/python3)._
 
-You also need to have the `requests` library on your machine. Run the following on your terminal:
+You also need to have the `requests`, `tqdm` and `unicodecsv` library on your machine. Run the following on your terminal:
 
 ```
-pip install requests
+pip install -r requirements.txt
 ```
+Or you can install individually by
+
+```
+pip3 install requests tqdm unicodecsv
+```
+
 
 ### Usage
 
@@ -40,7 +46,9 @@ Follow these easy steps to get these results for your league:
 
 _Warning: If you get an SSLError issue, then try using the [python3 branch](https://github.com/spinach/FantasyPremierLeague-Api.py/tree/python3). More details about the issue can be found in [#2](/../../issues/2)._
 
-Voila, you should be able to see 2 csv files created at the root of your project
+Voila, you should be able to see 2 csv files created at the output folder of your project
+
+Also if you want to run in debug mode now add argument `-d True` or `--debug True` in above command line
 
 ### How to Contribute
 This is just an example of what you can do with the fpl apis. I'm sure there are lots of cool ideas, so feel free to suggest by submitting an issue, or even write it yourself and send me a PR :)
