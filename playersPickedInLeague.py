@@ -1,7 +1,10 @@
 import requests
 import json
-import csv
+import unicodecsv as csv
 import argparse
+from tqdm import tqdm
+import logging, sys
+
 
 FPL_URL = "https://fantasy.premierleague.com/api/"
 LOGIN_URL = "https://users.premierleague.com/accounts/login/"
@@ -11,14 +14,25 @@ LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h/"
 TEAM_ENTRY_SUBURL = "entry/"
 PLAYERS_INFO_SUBURL = "bootstrap-static/"
 PLAYERS_INFO_FILENAME = "output/allPlayersInfo.json"
+USERNAME = 'fantasy@netmail3.net' 
+PASSWORD =  'FPLshow#123'
 
 USER_SUMMARY_URL = FPL_URL + USER_SUMMARY_SUBURL
 PLAYERS_INFO_URL = FPL_URL + PLAYERS_INFO_SUBURL
 START_PAGE = 1
 
+payload = {
+    'login':USERNAME,
+    'password':PASSWORD,
+    'redirect_uri': 'https://fantasy.premierleague.com/',
+    'app':'plfpl-web'
+}
+s = requests.session()
+s.post(LOGIN_URL, data=payload)
+
 # Download all player data: https://fantasy.premierleague.com/api/bootstrap-static
 def getPlayersInfo():
-    r = requests.get(PLAYERS_INFO_URL)
+    r = s.get(PLAYERS_INFO_URL)
     jsonResponse = r.json()
     with open(PLAYERS_INFO_FILENAME, 'w') as outfile:
         json.dump(jsonResponse, outfile)
@@ -30,7 +44,7 @@ def getUserEntryIds(league_id, ls_page, league_Standing_Url):
     entries = []
     while(True):
         league_url = league_Standing_Url + str(league_id) + "/standings/" + "?page_new_entries=1&page_standings=" + str(ls_page) + "&phase=1"
-        r = requests.get(league_url)
+        r = s.get(league_url)
         jsonResponse = r.json()
         managers = jsonResponse["standings"]["results"]
         if not managers:
@@ -48,7 +62,7 @@ def getUserEntryIds(league_id, ls_page, league_Standing_Url):
 def getplayersPickedForEntryId(entry_id, GWNumber):
     eventSubUrl = "event/" + str(GWNumber) + "/picks/"
     playerTeamUrlForSpecificGW = FPL_URL + TEAM_ENTRY_SUBURL + str(entry_id) + "/" + eventSubUrl
-    r = requests.get(playerTeamUrlForSpecificGW)
+    r = s.get(playerTeamUrlForSpecificGW)
     jsonResponse = r.json()
     try:
         picks = jsonResponse["picks"]
@@ -85,13 +99,17 @@ parser = argparse.ArgumentParser(description='Get players picked in your league 
 parser.add_argument('-l','--league', help='league entry id', required=True)
 parser.add_argument('-g','--gameweek', help='gameweek number', required=True)
 parser.add_argument('-t', '--type', help='league type')
+parser.add_argument('-d', '--debug', help='deubg mode on')
 args = vars(parser.parse_args())
+
+if args['debug']:
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 getPlayersInfo()
 playerElementIdToNameMap = {}
 allPlayers = getAllPlayersDetailedJson()
 for element in allPlayers["elements"]:
-    playerElementIdToNameMap[element["id"]] = element["web_name"].encode('ascii', 'ignore')
+    playerElementIdToNameMap[element["id"]] = element["web_name"]#.encode('ascii', 'ignore')
 
 countOfplayersPicked = {}
 countOfCaptainsPicked = {}
@@ -115,7 +133,7 @@ except Exception, err:
     print err
     raise
 
-for entry in entries:
+for entry in tqdm(entries):
     try:
         elements, captainId = getplayersPickedForEntryId(entry, GWNumber)
     except Exception, err:
