@@ -14,15 +14,25 @@ LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h/"
 TEAM_ENTRY_SUBURL = "entry/"
 PLAYERS_INFO_SUBURL = "bootstrap-static/"
 PLAYERS_INFO_FILENAME = "output/allPlayersInfo.json"
+USERNAME = 'fantasy@netmail3.net' 
+PASSWORD =  'FPLshow#123'
 
 USER_SUMMARY_URL = FPL_URL + USER_SUMMARY_SUBURL
 PLAYERS_INFO_URL = FPL_URL + PLAYERS_INFO_SUBURL
 START_PAGE = 1
 
+payload = {
+    'login':USERNAME,
+    'password':PASSWORD,
+    'redirect_uri': 'https://fantasy.premierleague.com/',
+    'app':'plfpl-web'
+}
+s = requests.session()
+s.post(LOGIN_URL, data=payload)
 
 # Download all player data: https://fantasy.premierleague.com/api/bootstrap-static/
 def getPlayersInfo():
-    r = requests.get(PLAYERS_INFO_URL)
+    r = s.get(PLAYERS_INFO_URL)
     jsonResponse = r.json()
     with open(PLAYERS_INFO_FILENAME, 'w') as outfile:
         json.dump(jsonResponse, outfile)
@@ -37,7 +47,7 @@ def getUserEntryIds(league_id, ls_page, league_Standing_Url):
             str(league_id) + "/standings/" + \
             "?page_new_entries=1&page_standings=" + str(ls_page) + "&phase=1"
         logging.info(league_url)
-        r = requests.get(league_url)
+        r = s.get(league_url)
         jsonResponse = r.json()
         managers = jsonResponse["standings"]["results"]
         if not managers:
@@ -56,7 +66,7 @@ def getplayersPickedForEntryId(entry_id, GWNumber):
     eventSubUrl = "event/" + str(GWNumber) + "/picks/"
     playerTeamUrlForSpecificGW = FPL_URL + \
         TEAM_ENTRY_SUBURL + str(entry_id) + "/" + eventSubUrl
-    r = requests.get(playerTeamUrlForSpecificGW)
+    r = s.get(playerTeamUrlForSpecificGW)
     jsonResponse = r.json()
     try:
         picks = jsonResponse["picks"]
