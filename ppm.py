@@ -8,7 +8,7 @@ USER_SUMMARY_SUBURL = "element-summary/"
 LEAGUE_CLASSIC_STANDING_SUBURL = "leagues-classic/"
 LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h/"
 TEAM_ENTRY_SUBURL = "entry/"
-PLAYERS_INFO_SUBURL = "bootstrap-static"
+PLAYERS_INFO_SUBURL = "bootstrap-static/"
 PLAYERS_INFO_FILENAME = "output/allPlayersInfo.json"
 
 USER_SUMMARY_URL = FPL_URL + USER_SUMMARY_SUBURL
