@@ -53,6 +53,9 @@ Also if you want to run in debug mode now add argument `-d True` or `--debug Tru
 ### How to Contribute
 This is just an example of what you can do with the fpl apis. I'm sure there are lots of cool ideas, so feel free to suggest by submitting an issue, or even write it yourself and send me a PR :)
 
+
+### DONE
+- This script is offered to website https://fantasyplayers.herokuapp.com where anyone can enter a league id to get players statistics
 ### TODO
 
-- Offer this script on a website so that anyone can enter his own Ids
+- Idea: Output file with every player selected per manager in league
