@@ -1,7 +1,8 @@
-import requests
-import json
-import csv
 import argparse
+import csv
+import json
+
+import requests
 
 FPL_URL = "https://fantasy.premierleague.com/api/"
 USER_SUMMARY_SUBURL = "element-summary/"
@@ -19,7 +20,7 @@ START_PAGE = 1
 def getPlayersInfo():
     r = requests.get(PLAYERS_INFO_URL)
     jsonResponse = r.json()
-    with open(PLAYERS_INFO_FILENAME, 'w') as outfile:
+    with open(PLAYERS_INFO_FILENAME, "w") as outfile:
         json.dump(jsonResponse, outfile)
 
 
@@ -29,16 +30,19 @@ def getAllPlayersDetailedJson():
         d = json.load(json_data)
         return d
 
+
 # writes the results to csv file
 def writeToFile(countOfplayersPicked, fileName):
-    with open(fileName, 'w') as out:
+    with open(fileName, "w") as out:
         csv_out = csv.writer(out)
-        csv_out.writerow(['name', 'num'])
+        csv_out.writerow(["name", "num"])
         for row in countOfplayersPicked:
             csv_out.writerow(row)
 
+
 def weird_division(n, d):
     return n / d if d else 0
+
 
 # Main Script
 
@@ -46,10 +50,24 @@ def weird_division(n, d):
 getPlayersInfo()
 playerElementIdToNameMap = {}
 allPlayers = getAllPlayersDetailedJson()
-playerElementIdToNameMap[0] = ",".join(["Name", "Position", "Total Score", "Minutes Played", "Cost", "points_per_game", "points_per_game_per_million", "Bonus per 90", "Points per 90", "Points per million", "Points per million per 90"])
+playerElementIdToNameMap[0] = ",".join(
+    [
+        "Name",
+        "Position",
+        "Total Score",
+        "Minutes Played",
+        "Cost",
+        "points_per_game",
+        "points_per_game_per_million",
+        "Bonus per 90",
+        "Points per 90",
+        "Points per million",
+        "Points per million per 90",
+    ]
+)
 for element in allPlayers["elements"]:
-#     if element["minutes"] < 1000:
-#         continue
+    #     if element["minutes"] < 1000:
+    #         continue
     totalScore = element["total_points"]
     minutesPlayed = element["minutes"]
     cost = element["now_cost"] / 10.0
@@ -57,14 +75,28 @@ for element in allPlayers["elements"]:
     points_per_game = float(element["points_per_game"])
     points_per_game_per_million = round(points_per_game / cost, 2)
     appearances = minutesPlayed / 90.0
-    pointsPer90 = round(weird_division(totalScore , appearances), 2)
-    pointsPerMillion = round(weird_division(totalScore , cost), 2)
-    pointsPerMillionPer90 = round(weird_division(pointsPer90 , cost), 2)
-    bonusPer90 = round(weird_division(element["bonus"] , appearances), 2)
-    name = element["web_name"].encode('ascii', 'ignore')
-    playerElementIdToNameMap[element["id"]] = ",".join([name, str(position), str(totalScore), str(minutesPlayed), str(cost), str(points_per_game), str(points_per_game_per_million), str(bonusPer90), str(pointsPer90), str(pointsPerMillion), str(pointsPerMillionPer90)])
+    pointsPer90 = round(weird_division(totalScore, appearances), 2)
+    pointsPerMillion = round(weird_division(totalScore, cost), 2)
+    pointsPerMillionPer90 = round(weird_division(pointsPer90, cost), 2)
+    bonusPer90 = round(weird_division(element["bonus"], appearances), 2)
+    name = element["web_name"].encode("ascii", "ignore")
+    playerElementIdToNameMap[element["id"]] = ",".join(
+        [
+            name,
+            str(position),
+            str(totalScore),
+            str(minutesPlayed),
+            str(cost),
+            str(points_per_game),
+            str(points_per_game_per_million),
+            str(bonusPer90),
+            str(pointsPer90),
+            str(pointsPerMillion),
+            str(pointsPerMillionPer90),
+        ]
+    )
 
 print(playerElementIdToNameMap)
-with open("output/ppm.csv", 'w') as f:
+with open("output/ppm.csv", "w") as f:
     for key, value in playerElementIdToNameMap.items():
         f.write(value + "\n")
