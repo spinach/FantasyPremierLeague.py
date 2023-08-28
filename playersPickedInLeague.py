@@ -1,11 +1,11 @@
 import argparse  # noqa 401
+import csv
 import json
 import logging
 import os
 import sys
 
 import requests
-import unicodecsv as csv
 from tqdm import tqdm
 
 FPL_URL = "https://fantasy.premierleague.com/api/"
@@ -98,7 +98,7 @@ def getAllPlayersDetailedJson():
 
 def writeToFile(countOfplayersPicked, fileName):
     # writes the results to csv file
-    with open(fileName, "wb") as out:
+    with open(fileName, "w") as out:
         csv_out = csv.writer(out)
         csv_out.writerow(["name", "num"])
         for row in countOfplayersPicked:
