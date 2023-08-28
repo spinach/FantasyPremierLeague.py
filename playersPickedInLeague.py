@@ -100,7 +100,8 @@ def getAllPlayersDetailedJson():
 
 def writeToFile(countOfplayersPicked, fileName):
     # writes the results to csv file
-    with open(fileName, "w") as out:
+    print(countOfplayersPicked, fileName)
+    with open(fileName, "wb") as out:
         csv_out = csv.writer(out)
         csv_out.writerow(["name", "num"])
         for row in countOfplayersPicked:
@@ -175,7 +176,7 @@ def main():
     )
     writeToFile(
         listOfcountOfplayersPicked,
-        "output/GW" + str(GWNumber) + " Players " + str(leagueIdSelected) + ".csv",
+        f"output/GW{GWNumber}Players{leagueIdSelected}.csv",
     )
 
     listOfCountOfCaptainsPicked = sorted(
@@ -185,7 +186,7 @@ def main():
     )
     writeToFile(
         listOfCountOfCaptainsPicked,
-        "output/GW" + str(GWNumber) + " Captains " + str(leagueIdSelected) + ".csv",
+        f"output/GW{GWNumber}Captains{leagueIdSelected}.csv",
     )
 
 
