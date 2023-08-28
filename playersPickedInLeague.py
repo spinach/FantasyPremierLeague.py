@@ -1,6 +1,7 @@
 import argparse  # noqa 401
 import json
 import logging
+import os
 import sys
 
 import requests
@@ -15,16 +16,14 @@ LEAGUE_H2H_STANDING_SUBURL = "leagues-h2h/"
 TEAM_ENTRY_SUBURL = "entry/"
 PLAYERS_INFO_SUBURL = "bootstrap-static/"
 PLAYERS_INFO_FILENAME = "output/allPlayersInfo.json"
-USERNAME = "fantasy@netmail3.net"
-PASSWORD = "FPLshow#123"
 
 USER_SUMMARY_URL = FPL_URL + USER_SUMMARY_SUBURL
 PLAYERS_INFO_URL = FPL_URL + PLAYERS_INFO_SUBURL
 START_PAGE = 1
 
 PAYLOAD = {
-    "login": USERNAME,
-    "password": PASSWORD,
+    "login": os.environ.get("USERNAME", "fantasy@netmail3.net"),
+    "password": os.environ.get("PASSWORD", "FPLshow#123"),
     "redirect_uri": "https://fantasy.premierleague.com/",
     "app": "plfpl-web",
 }
@@ -77,7 +76,6 @@ def getplayersPickedForEntryId(entry_id, GWNumber):
     try:
         picks = result["picks"]
     except Exception as e:
-        print(e)
         if result["detail"]:
             print("entry_id " + str(entry_id) + " doesn't have info for this gameweek")
         return None, None
@@ -100,7 +98,6 @@ def getAllPlayersDetailedJson():
 
 def writeToFile(countOfplayersPicked, fileName):
     # writes the results to csv file
-    print(countOfplayersPicked, fileName)
     with open(fileName, "wb") as out:
         csv_out = csv.writer(out)
         csv_out.writerow(["name", "num"])
